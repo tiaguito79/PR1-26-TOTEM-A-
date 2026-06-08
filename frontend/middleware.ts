@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { jwtVerify } from "jose"
-import { AUTH_COOKIE_NAME } from "@/lib/auth.constants"
+
+// Keep in sync with lib/auth.constants.ts (Edge middleware cannot import @/ aliases on Vercel)
+const AUTH_COOKIE_NAME = "totem_token"
 
 const PROTECTED_PAGE_PREFIXES = ["/dashboard", "/editor-plantillas", "/administradores"]
 
