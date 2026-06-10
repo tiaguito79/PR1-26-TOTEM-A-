@@ -26,6 +26,7 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
+import { copyToClipboard } from "@/lib/copy-to-clipboard"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -245,8 +246,9 @@ export function NewTotemSheet({ open, onOpenChange, onSave }: NewTotemSheetProps
     )
   }, [selectedSede, namePresets])
 
-  const handleCopy = (text: string, type: "user" | "password") => {
-    navigator.clipboard.writeText(text)
+  const handleCopy = async (text: string, type: "user" | "password") => {
+    const ok = await copyToClipboard(text)
+    if (!ok) return
 
     if (type === "user") {
       setCopiedUser(true)

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { KeyRound, User, Lock, Eye, EyeOff, Copy, X } from "lucide-react"
-import { toast } from "sonner"
+import { KeyRound, User, Lock, Eye, EyeOff, Copy, Check } from "lucide-react"
+import { copyToClipboard } from "@/lib/copy-to-clipboard"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -28,10 +28,20 @@ export function CredentialsDialog({
   password,
 }: CredentialsDialogProps) {
   const [showPassword, setShowPassword] = useState(false)
+  const [copiedUser, setCopiedUser] = useState(false)
+  const [copiedPassword, setCopiedPassword] = useState(false)
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
-    toast.info("Copiado al portapapeles.")
+  const handleCopy = async (text: string, type: "user" | "password") => {
+    const ok = await copyToClipboard(text)
+    if (!ok) return
+
+    if (type === "user") {
+      setCopiedUser(true)
+      setTimeout(() => setCopiedUser(false), 2000)
+    } else {
+      setCopiedPassword(true)
+      setTimeout(() => setCopiedPassword(false), 2000)
+    }
   }
 
   return (
@@ -72,9 +82,13 @@ export function CredentialsDialog({
                 variant="outline"
                 size="icon"
                 className="h-12 w-12 border-border"
-                onClick={() => copyToClipboard(username)}
+                onClick={() => handleCopy(username, "user")}
               >
-                <Copy className="w-4 h-4 text-muted-foreground" />
+                {copiedUser ? (
+                  <Check className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <Copy className="w-4 h-4 text-muted-foreground" />
+                )}
               </Button>
             </div>
           </div>
@@ -107,9 +121,13 @@ export function CredentialsDialog({
                 variant="outline"
                 size="icon"
                 className="h-12 w-12 border-border"
-                onClick={() => copyToClipboard(password)}
+                onClick={() => handleCopy(password, "password")}
               >
-                <Copy className="w-4 h-4 text-muted-foreground" />
+                {copiedPassword ? (
+                  <Check className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <Copy className="w-4 h-4 text-muted-foreground" />
+                )}
               </Button>
             </div>
           </div>
