@@ -6,6 +6,11 @@
     "dev": "cd frontend && npm run dev",
     "install-all": "cd frontend && npm install",
     "build": "cd frontend && npm run build",
-    "start": "cd frontend && npm run start"
+    "start": "cd frontend && npm run start",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^15.17.0"
   }
 }
